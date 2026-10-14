@@ -1,0 +1,41 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <!-- AMP loads Plugins/<Name>/<Name>.dll and looks for an AMPPlugin in namespace <Name>. -->
+    <AssemblyName>MinecraftRouter</AssemblyName>
+    <RootNamespace>MinecraftRouter</RootNamespace>
+    <Version>0.1.0</Version>
+    <Company>Jayden Leybourne</Company>
+    <Product>Minecraft Router for AMP</Product>
+    <RepositoryUrl>https://github.com/jleybourne/AMP-Minecraft-Router</RepositoryUrl>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <LibDir>$(MSBuildThisFileDirectory)../../lib/</LibDir>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Build-time references only. AMP provides these at runtime, so they're never shipped.
+         Run scripts/fetch-amp-refs.sh (or .ps1) to pull them out of the current AMP release. -->
+    <Reference Include="ModuleShared">
+      <HintPath>$(LibDir)ModuleShared.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="InstanceManagerPlugin">
+      <HintPath>$(LibDir)InstanceManagerPlugin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="WebRoot/**" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <Target Name="CheckAmpRefs" BeforeTargets="ResolveAssemblyReferences">
+    <Error Condition="!Exists('$(LibDir)ModuleShared.dll') Or !Exists('$(LibDir)InstanceManagerPlugin.dll')"
+           Text="AMP reference DLLs are missing from lib/. Run scripts/fetch-amp-refs.sh (Linux/macOS) or scripts/fetch-amp-refs.ps1 (Windows) first." />
+  </Target>
+
+</Project>

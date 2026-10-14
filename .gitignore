@@ -1,0 +1,8 @@
+bin/
+obj/
+lib/*.dll
+dist/
+*.user
+.vs/
+.idea/
+lib/AMPVersion.txt
